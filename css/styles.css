@@ -1,0 +1,328 @@
+/* Dracula Theme Palette */
+:root {
+  --bg: #282a36;
+  --bg-darker: #1e1f29;
+  --fg: #f8f8f2;
+  --comment: #6272a4;
+  --cyan: #8be9fd;
+  --green: #50fa7b;
+  --orange: #ffb86c;
+  --pink: #ff79c6;
+  --purple: #bd93f9;
+  --red: #ff5555;
+  --yellow: #f1fa8c;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--bg-darker);
+  color: var(--fg);
+  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+
+#game-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+}
+
+#pose-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 2;
+  pointer-events: none;
+}
+
+#ui-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  pointer-events: none;
+}
+
+#ui-overlay button {
+  pointer-events: all;
+}
+
+#score-display {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+#score-label {
+  font-size: 14px;
+  letter-spacing: 4px;
+  color: var(--comment);
+  text-transform: uppercase;
+}
+
+#score-value {
+  font-size: 48px;
+  font-weight: 900;
+  color: var(--green);
+  text-shadow: 0 0 20px rgba(80, 250, 123, 0.5);
+  transition: transform 0.1s;
+}
+
+#score-value.bump {
+  transform: scale(1.3);
+}
+
+#combo-display {
+  position: absolute;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--yellow);
+  text-shadow: 0 0 15px rgba(241, 250, 140, 0.6);
+  animation: comboPulse 0.5s ease-in-out;
+}
+
+@keyframes comboPulse {
+  0% { transform: translateX(-50%) scale(0.5); opacity: 0; }
+  50% { transform: translateX(-50%) scale(1.2); }
+  100% { transform: translateX(-50%) scale(1); opacity: 1; }
+}
+
+#fps-display {
+  position: absolute;
+  bottom: 10px;
+  right: 15px;
+  font-size: 12px;
+  color: var(--comment);
+  font-family: monospace;
+}
+
+#pause-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 24px;
+  background: rgba(40, 42, 54, 0.7);
+  border: 1px solid var(--comment);
+  color: var(--fg);
+  border-radius: 8px;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#pause-btn:hover {
+  background: rgba(98, 114, 164, 0.5);
+}
+
+#timer-display {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+#timer-icon {
+  font-size: 28px;
+}
+
+#timer-value {
+  font-size: 36px;
+  font-weight: 900;
+  font-family: monospace;
+  color: var(--cyan);
+  text-shadow: 0 0 15px rgba(139, 233, 253, 0.5);
+  transition: color 0.3s;
+}
+
+#timer-value.warning {
+  color: var(--orange);
+  text-shadow: 0 0 15px rgba(255, 184, 108, 0.6);
+  animation: timerPulse 0.5s ease-in-out infinite alternate;
+}
+
+#timer-value.critical {
+  color: var(--red);
+  text-shadow: 0 0 20px rgba(255, 85, 85, 0.7);
+  animation: timerPulse 0.3s ease-in-out infinite alternate;
+}
+
+@keyframes timerPulse {
+  from { transform: scale(1); }
+  to { transform: scale(1.15); }
+}
+
+#time-penalty {
+  position: absolute;
+  top: 60px;
+  left: 20px;
+  font-size: 24px;
+  font-weight: 700;
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+  z-index: 10;
+}
+
+#time-penalty.show-penalty {
+  color: var(--red);
+  opacity: 1;
+  animation: penaltyFloat 1s ease-out forwards;
+}
+
+#time-penalty.show-bonus {
+  color: var(--green);
+  opacity: 1;
+  animation: penaltyFloat 1s ease-out forwards;
+}
+
+@keyframes penaltyFloat {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-40px); opacity: 0; }
+}
+
+/* Screens */
+.screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(30, 31, 41, 0.92);
+  backdrop-filter: blur(10px);
+}
+
+.screen.hidden {
+  display: none;
+}
+
+.screen-content {
+  text-align: center;
+  max-width: 500px;
+  padding: 40px;
+}
+
+.game-title {
+  font-size: 56px;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--pink), var(--purple), var(--cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 8px;
+}
+
+.game-subtitle {
+  font-size: 18px;
+  color: var(--comment);
+  margin-bottom: 30px;
+}
+
+.instructions {
+  font-size: 16px;
+  color: var(--fg);
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+.action-btn {
+  background: linear-gradient(135deg, var(--purple), var(--pink));
+  color: var(--fg);
+  border: none;
+  padding: 16px 48px;
+  font-size: 20px;
+  font-weight: 700;
+  border-radius: 12px;
+  cursor: pointer;
+  letter-spacing: 2px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-transform: uppercase;
+}
+
+.action-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 30px rgba(189, 147, 249, 0.5);
+}
+
+.tech-note {
+  margin-top: 20px;
+  font-size: 12px;
+  color: var(--comment);
+}
+
+.game-over-title {
+  font-size: 52px;
+  color: var(--red);
+  text-shadow: 0 0 30px rgba(255, 85, 85, 0.5);
+  margin-bottom: 20px;
+}
+
+.final-score {
+  font-size: 28px;
+  color: var(--green);
+  margin-bottom: 10px;
+}
+
+.final-combo {
+  font-size: 20px;
+  color: var(--yellow);
+  margin-bottom: 30px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Screen shake for bomb explosion */
+@keyframes shake {
+  0%  { transform: translate(0, 0); }
+  10% { transform: translate(-12px, 8px); }
+  20% { transform: translate(10px, -10px); }
+  30% { transform: translate(-8px, -6px); }
+  40% { transform: translate(8px, 10px); }
+  50% { transform: translate(-6px, -8px); }
+  60% { transform: translate(10px, 4px); }
+  70% { transform: translate(-4px, 8px); }
+  80% { transform: translate(6px, -4px); }
+  90% { transform: translate(-2px, 2px); }
+  100%{ transform: translate(0, 0); }
+}
+
+body.screen-shake {
+  animation: shake 0.5s ease-out;
+}
+
+body.screen-shake #game-canvas,
+body.screen-shake #pose-canvas {
+  animation: shake 0.5s ease-out;
+}

@@ -1,0 +1,11 @@
+{
+  "name": "vision-slice",
+  "version": "1.0.0",
+  "description": "Fruit Ninja with Body Tracking using MediaPipe and Three.js",
+  "scripts": {
+    "start": "npx serve . -p 8080 --cors"
+  },
+  "devDependencies": {
+    "serve": "^14.2.0"
+  }
+}
